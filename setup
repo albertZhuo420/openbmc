@@ -15,6 +15,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+#
+# 当 [$ZSH_NAME 为空且长度为0时] && ["$(basename -- "$0")" = "setup"] 会报错
+# "$(basename -- "$0")" = "setup" 这一步的目的就是: 不允许 [./setup], 要[. setup]
+#
 if [ -z "$ZSH_NAME" ] && [ "$(basename -- "$0")" = "setup" ]; then
 	echo The script must be sourced, not executed
 	exit 1
