@@ -72,6 +72,16 @@ if __name__ == "__main__":
 	if __version__ != bb.__version__:
 		sys.exit("Bitbake core version and program version mismatch!")
 	try:
+		"""
+		print("&&&&&&&&&&&&&&&&&&&&&&&&&7")
+		print(sys.argv) 
+		# 是一个列表, 其实就是整个命令行, 打印结果如下:
+		# 	['/home/zhuo/work/src_code/openbmc_src_code/poky/bitbake/bin/bitbake', 
+		# 	 'obmc-phosphor-image', 
+		# 	 '--runall=fetch', 
+		# 	 '-k']
+		sys.exit()
+		"""
 		sys.exit(bitbake_main(BitBakeConfigParameters(sys.argv), cookerdata.CookerConfiguration()))
 	except BBMainException as err:
 		sys.exit(err)
