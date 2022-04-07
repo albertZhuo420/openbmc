@@ -13,34 +13,71 @@
 import os
 import sys
 import warnings
+
+"""
+	warnings模块 参考链接: https://blog.csdn.net/nine_mink/article/details/104709632
+"""
 warnings.simplefilter("default")
 
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(__file__)),
-                                'lib'))
+"""
+	print("====================================================================================")
+	
+	print(__file__) 参考链接: https://www.cnblogs.com/ajaxa/p/9016475.html
+	print(__file__) # /mnt/d/code/source_code_分析/openbmc_src/poky/bitbake/bin/bitbake
+	print(os.path.dirname(__file__)) # /mnt/d/code/source_code_分析/openbmc_src/poky/bitbake/bin
+	print(os.path.dirname(os.path.dirname(__file__))) # /mnt/d/code/source_code_分析/openbmc_src/poky/bitbake
+	print("====================================================================================")
+"""
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(__file__)), 'lib'))
+
 try:
-    import bb
+	"""
+	  sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(__file__)), 'lib'))
+	  参考链接: https://www.cnblogs.com/mtcnn/p/9411730.html
+	  0: 表示最高优先级
+	  
+	  上述代码就在系统的搜索路径中添加了路径: /mnt/d/code/source_code_分析/openbmc_src/poky/bitbake, 
+	  且为最高搜索优先级, 这样可以确保下面 import bb 时, 是此路径下的bb文件夹
+	"""
+	import bb
 except RuntimeError as exc:
-    sys.exit(str(exc))
+	"""
+	  我将 lib 文件夹改名为: lib_, 这样就可以创造一个异常, 终端捕获异常打印如下结果:
+	  /usr/lib/python3/dist-packages/apport/report.py:13: DeprecationWarning: the imp module is deprecated in favour of importlib; see the module's documentation for alternative uses
+	    import fnmatch, glob, traceback, errno, sys, atexit, locale, imp, stat
+	  Traceback (most recent call last):
+	    File "/mnt/d/code/source_code_分析/openbmc_src/poky/bitbake/bin/bitbake", line 34, in <module>
+	      import bb
+	  ModuleNotFoundError: No module named 'bb'
+	"""
+	print("==========") # 这一行代码并没有在终端输出
+	sys.exit(str(exc))
 
 from bb import cookerdata
 from bb.main import bitbake_main, BitBakeConfigParameters, BBMainException
 
 if sys.getfilesystemencoding() != "utf-8":
-    sys.exit("Please use a locale setting which supports UTF-8 (such as LANG=en_US.UTF-8).\nPython can't change the filesystem locale after loading so we need a UTF-8 when Python starts or things won't work.")
+	sys.exit("Please use a locale setting which supports UTF-8 (such as LANG=en_US.UTF-8).	\
+			\nPython can't change the filesystem locale after loading so we need a UTF-8 	\
+			when Python starts or things won't work.")
 
 __version__ = "2.0.0"
 
-if __name__ == "__main__":
-    if __version__ != bb.__version__:
-        sys.exit("Bitbake core version and program version mismatch!")
-    try:
-        sys.exit(bitbake_main(BitBakeConfigParameters(sys.argv),
-                              cookerdata.CookerConfiguration()))
-    except BBMainException as err:
-        sys.exit(err)
-    except bb.BBHandledException:
-        sys.exit(1)
-    except Exception:
-        import traceback
-        traceback.print_exc()
-        sys.exit(1)
+"""
+	[__name__ == "__main__"]参考链接: http://c.biancheng.net/view/4643.html
+	[if __name__ == '__main__':] 的作用是确保只有单独运行该模块时, 此表达式才成立, 才可以进入此判断语法, 执行其中的测试代码;
+	反之, 如果只是作为模块导入到其他程序文件中, 则此表达式将不成立, 运行其它程序时, 也就不会执行该判断语句中的测试代码;
+"""
+if __name__ == "__main__": 
+	if __version__ != bb.__version__:
+		sys.exit("Bitbake core version and program version mismatch!")
+	try:
+		sys.exit(bitbake_main(BitBakeConfigParameters(sys.argv), cookerdata.CookerConfiguration()))
+	except BBMainException as err:
+		sys.exit(err)
+	except bb.BBHandledException:
+		sys.exit(1)
+	except Exception:
+		import traceback
+		traceback.print_exc()
+		sys.exit(1)

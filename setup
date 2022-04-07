@@ -16,17 +16,24 @@
 # limitations under the License.
 #
 
+######################################################################################
 #
 # 当 [$ZSH_NAME 为空且长度为0时] && ["$(basename -- "$0")" = "setup"] 会报错
 # "$(basename -- "$0")" = "setup" 这一步的目的就是: 不允许 [./setup], 要[. setup]
 #
+######################################################################################
 if [ -z "$ZSH_NAME" ] && [ "$(basename -- "$0")" = "setup" ]; then
 	echo The script must be sourced, not executed
 	exit 1
 fi
 
+######################################################################################
+#
+# true 的作用是让该表达式一定返回成功的标志:  Exit with a status code indicating success
+#
+######################################################################################
 # Check if 'column' command is present
-COLUMN=$(which column || true)
+COLUMN=$(which column || true) 
 if [ -z "$COLUMN" ]; then
     # If it is not, use 'cat'
     COLUMN=$(which cat)
