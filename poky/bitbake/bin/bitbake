@@ -75,7 +75,7 @@ if __name__ == "__main__":
 		"""
 		print("&&&&&&&&&&&&&&&&&&&&&&&&&7")
 		print(sys.argv) 
-		# 是一个列表, 其实就是整个命令行, 打印结果如下:
+		# 是一个列表, 其实就是整个命令行, 打 印结果如下:
 		# 	['/home/zhuo/work/src_code/openbmc_src_code/poky/bitbake/bin/bitbake', 
 		# 	 'obmc-phosphor-image', 
 		# 	 '--runall=fetch', 
