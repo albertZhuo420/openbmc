@@ -1,11 +1,16 @@
 #!/bin/bash
 if [ -n "${BASH_SOURCE[0]}" ]; then
+	echo "++++++++++++++++1"
     OBMCROOT="$(dirname "${BASH_SOURCE[0]}")"
 elif [ -n "$ZSH_NAME" ]; then
+	echo "++++++++++++++++2"
     OBMCROOT="$(dirname "$0")"
 else
+	echo "++++++++++++++++3"
     OBMCROOT="$(pwd)"
 fi
+
+echo $OBMCROOT
 
 if [ -f "$OBMCROOT/customrc" ]; then
     echo "### Sourcing customrc ###"

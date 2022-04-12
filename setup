@@ -39,11 +39,30 @@ if [ -z "$COLUMN" ]; then
     COLUMN=$(which cat)
 fi
 
+# 测试代码start
+# if which find > /dev/null 2>&1; then
+# 	my_configs=$(find meta-* -path "*/conf/machine/*.conf")
+# fi
+# echo "================================================="
+# echo $my_configs
+# echo "================================================="
+# for my_config in $my_configs; do
+# 	tmpl=${my_config%/machine/*.conf}
+# 	echo $tmpl
+# done
+# echo "================================================="
+# 测试代码end
+
 machine() {
 	local target=$1
 	local build_dir=$2
 	local cfg name tmpl
 	local configs
+
+	# echo "***********************************************"
+	# echo $target
+	# echo $build_dir
+	# echo "***********************************************"
 
 	# zsh requires wordsplit so that variable expansion behaves like bash
 	if [ -n "$ZSH_NAME" ]; then
@@ -56,8 +75,11 @@ machine() {
 	fi
 
 	for cfg in $configs; do
-		name=${cfg##*/}
-		name=${name%.conf}
+		# ${file##*/}的意思: 参考链接: https://blog.csdn.net/jiezi2016/article/details/79649382
+		# # 是 去掉左边（键盘上#在 $ 的左边）
+		# %是去掉右边（键盘上% 在$ 的右边）
+		name=${cfg##*/}		# 删掉最后一个 /  及其左边的字符串
+		name=${name%.conf}	# ${file%.*}：删掉最后一个  .  及其右边的字符串
 		tmpl=${cfg%/machine/*.conf}
 
         # Skip any machines that don't support meta-phosphor.
@@ -91,14 +113,16 @@ machine() {
 	[ -n "$target" ] && echo "No such machine!" >&2 && return 1
 }
 
+# echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 先执行"
+
 if [ -z "$1" ]; then
 	echo Target machine must be specified. Use one of:
 	echo
 	(echo qemuarm; machine) | sort | $COLUMN
 elif [ "$1" = "qemuarm" ]; then
 	source openbmc-env
-else
 	bld_dir=$2
+else
 	if [ -z "$2" ]; then
 		bld_dir="build/$1"
 	fi
