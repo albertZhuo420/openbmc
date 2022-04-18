@@ -96,8 +96,18 @@ machine() {
 			if [ "${name}" = "${target}" ]; then
 				echo "Machine ${target} found in ${tmpl%/conf}"
 				mkdir -p "${build_dir}"
+
+				# echo "******************************************************"
+				# echo ${tmpl}
+				# echo "******************************************************"
+
 				TEMPLATECONF="${tmpl}" source \
 						oe-init-build-env "${build_dir}"
+
+				# echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+				# echo $(cat conf/templateconf.cfg)
+				# echo ${tmpl}
+				# echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 
 				if [ "$(cat conf/templateconf.cfg)" = "${tmpl}" ]; then
 					sed "s/^\(MACHINE\s*[?:]*\s*=\s*\).*$/\1\"${target}\"/" \
