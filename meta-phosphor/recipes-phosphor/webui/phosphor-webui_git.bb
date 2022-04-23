@@ -15,6 +15,10 @@ inherit allarch
 
 FILES:${PN} += "${datadir}/www/*"
 
+python __anonymous() {
+  d.appendVarFlag('do_compile', 'network', '1') 
+}
+
 do_compile () {
     cd ${S}
     rm -rf node_modules
@@ -29,4 +33,3 @@ do_install () {
    find ${D}${datadir}/www -type f -exec chmod a=r,u+w '{}' +
    find ${D}${datadir}/www -type d -exec chmod a=rx,u+w '{}' +
 }
-
