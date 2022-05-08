@@ -37,7 +37,7 @@ EXTRA_OENPM ?= ""
 # https://git.yoctoproject.org/poky/tree/documentation/migration-guides/migration-3.5.rst#n25
 
 # 下面这一行代码要注释掉, 我们要联网编译
-do_compile[network] = "1"
+do_compile[network] = "0"
 
 do_compile () {
     cd ${S}
@@ -53,3 +53,5 @@ do_install () {
    find ${D}${datadir}/www -type f -exec chmod a=r,u+w '{}' +
    find ${D}${datadir}/www -type d -exec chmod a=rx,u+w '{}' +
 }
+
+

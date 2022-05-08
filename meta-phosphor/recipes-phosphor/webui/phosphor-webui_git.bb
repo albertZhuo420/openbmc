@@ -16,7 +16,8 @@ inherit allarch
 FILES:${PN} += "${datadir}/www/*"
 
 python __anonymous() {
-  d.appendVarFlag('do_compile', 'network', '1') 
+  d.appendVarFlag('do_compile', 'network', '0') # 个人修改, 启动网络
+  #d.appendVarFlag('do_compile', 'network', '1') 原先的
 }
 
 do_compile () {
